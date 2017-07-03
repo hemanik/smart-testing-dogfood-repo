@@ -49,6 +49,8 @@ public class ConfigurationRegistrar {
     private InstanceProducer<ArquillianDescriptor> descriptorInst;
 
     public void loadConfiguration(@Observes ManagerStarted event) {
+        System.out.println("Modified logic for loading configuration");
+
         final InputStream input = FileUtils.loadArquillianXml(ARQUILLIAN_XML_PROPERTY, ARQUILLIAN_XML_DEFAULT);
 
         //First arquillian.xml is resolved
