@@ -1,85 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-  <!-- Parent -->
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
     <version>22</version>
-    <relativePath/>
+    <relativePath></relativePath>
   </parent>
-
-  <!-- Model Information -->
-  <modelVersion>4.0.0</modelVersion>
-
-  <!-- Artifact Information -->
   <groupId>org.jboss.arquillian</groupId>
   <artifactId>arquillian-parent</artifactId>
   <version>1.2.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Arquillian Aggregator</name>
-  <url>http://arquillian.org</url>
   <description>Arquillian Aggregator</description>
-
-  <properties>
-    <!-- jboss-parent override -->
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
-
-    <!-- External Deps -->
-    <version.shrinkwrap_shrinkwrap>1.2.6</version.shrinkwrap_shrinkwrap>
-    <version.shrinkwrap_descriptors>2.0.0-alpha-10</version.shrinkwrap_descriptors>
-  </properties>
-
-  <issueManagement>
-    <system>jira</system>
-    <url>http://jira.jboss.com/jira/browse/ARQ</url>
-  </issueManagement>
-
+  <url>http://arquillian.org</url>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
       <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
-
-  <scm>
-    <connection>scm:git:git://git@github.com:arquillian/arquillian-core.git</connection>
-    <developerConnection>scm:git:ssh://github.com/arquillian/arquillian-core.git</developerConnection>
-    <url>git://github.com/arquillian/arquillian-core.git</url>
-    <tag>HEAD</tag>
-  </scm>
-
   <modules>
     <module>build</module>
     <module>core</module>
     <module>config</module>
     <module>test</module>
     <module>container</module>
-
     <module>junit</module>
     <module>testng</module>
-
     <module>testenrichers</module>
     <module>protocols</module>
-
     <module>bom</module>
   </modules>
-
+  <scm>
+    <connection>scm:git:git://git@github.com:arquillian/arquillian-core.git</connection>
+    <developerConnection>scm:git:ssh://github.com/arquillian/arquillian-core.git</developerConnection>
+    <url>git://github.com/arquillian/arquillian-core.git</url>
+  </scm>
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.jboss.com/jira/browse/ARQ</url>
+  </issueManagement>
+  <properties>
+    <version.shrinkwrap_descriptors>2.0.0-alpha-10</version.shrinkwrap_descriptors>
+    <version.shrinkwrap_shrinkwrap>1.2.6</version.shrinkwrap_shrinkwrap>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.javassist</groupId>
       <artifactId>javassist</artifactId>
       <version>3.21.0-GA</version>
     </dependency>
+    <dependency>
+      <groupId>org.arquillian.smart.testing</groupId>
+      <artifactId>smart-testing-surefire-provider</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.arquillian.smart.testing</groupId>
+      <artifactId>smart-testing-strategy-affected</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
-
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
+	      <artifactId>maven-surefire-plugin</artifactId>
+	      <version>2.20</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.arquillian.smart.testing</groupId>
+            <artifactId>smart-testing-surefire-provider</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+          </dependency>
+        </dependencies>
+	<configuration>
+		<forkedProcessTimeoutInSeconds>120</forkedProcessTimeoutInSeconds>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
           <trimStackTrace>false</trimStackTrace>
           <printSummary>true</printSummary>
@@ -88,6 +87,10 @@
             <include>**/*TestSuite.java</include>
           </includes>
           <useFile>true</useFile>
+          <properties>
+            <usage>ordering</usage>
+            <strategies>affected</strategies>
+          </properties>
         </configuration>
       </plugin>
       <plugin>
@@ -112,7 +115,6 @@
       </plugin>
     </plugins>
   </build>
-
   <profiles>
     <profile>
       <id>release</id>
@@ -128,6 +130,14 @@
           </plugin>
           <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
             <configuration>
               <doclet>org.jboss.apiviz.APIviz</doclet>
               <docletArtifact>
@@ -144,19 +154,10 @@
               <author>true</author>
               <keywords>true</keywords>
               <additionalparam>-sourceclasspath
-                ${project.build.outputDirectory}
-              </additionalparam>
+                ${project.build.outputDirectory}</additionalparam>
               <stylesheetfile>${project.parent.parent.basedir}/javadoc/stylesheet.css</stylesheetfile>
               <javadocDirectory>${project.parent.parent.basedir}/javadoc</javadocDirectory>
             </configuration>
-            <executions>
-              <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
