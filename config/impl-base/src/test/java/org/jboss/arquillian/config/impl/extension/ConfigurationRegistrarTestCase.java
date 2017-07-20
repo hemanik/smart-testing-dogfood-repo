@@ -20,6 +20,7 @@ package org.jboss.arquillian.config.impl.extension;
 import java.util.HashMap;
 import java.util.Map;
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
+import org.jboss.arquillian.config.descriptor.api.EmptyClass;
 import org.jboss.arquillian.core.api.Injector;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -46,6 +47,7 @@ public class ConfigurationRegistrarTestCase extends AbstractManagerTestBase {
 
     static void validate(String property, String value, AssertCallback callback) {
         try {
+            new EmptyClass();
             System.setProperty(property, value);
             callback.validate();
         } finally {
