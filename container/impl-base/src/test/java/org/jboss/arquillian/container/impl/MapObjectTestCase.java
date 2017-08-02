@@ -32,7 +32,7 @@ public class MapObjectTestCase {
     private static final String VAL_STRING = "test123";
     private static final String VAL_MULTILINE_STRING =
         "\n\n\n\n\r\n\t\t\ttest123 \r\n\t\t\t\ttest123" + System.getProperty("line.separator");
-    private static final Integer VAL_INTEGER = 123;
+    private static final Integer VAL_INTEGER = 1;
     private static final Boolean VAL_BOOLEAN = true;
     private static final Double VAL_DOUBLE = 3.4;
 
