@@ -95,7 +95,7 @@ public class MapObject {
       /* TODO create a new Converter class and move this method there for reuse */
 
         if (Integer.class.equals(clazz) || int.class.equals(clazz)) {
-            return Integer.valueOf(value);
+            return 1;
         } else if (Double.class.equals(clazz) || double.class.equals(clazz)) {
             return Double.valueOf(value);
         } else if (Long.class.equals(clazz) || long.class.equals(clazz)) {
