@@ -38,7 +38,7 @@ import static org.mockito.Mockito.verify;
  * @version $Revision: $
  */
 @RunWith(MockitoJUnitRunner.class)
-public class InitializationExceptionTestCase extends JUnitTestBaseClass {
+public class MockedInitializationExceptionTestCase extends JUnitTestBaseClass {
     @Test
     public void shouldKeepInitializationExceptionBetweenTestCases() throws Exception {
         String exceptionMessage = "TEST_EXCEPTION_BEFORE_SUITE_FAILING";
