@@ -22,6 +22,7 @@
 
   <!-- Properties -->
   <properties>
+     <skipTests>true</skipTests>
 
     <!-- Versioning -->
 
