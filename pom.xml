@@ -30,6 +30,9 @@
     <!-- External Deps -->
     <version.shrinkwrap_shrinkwrap>1.2.6</version.shrinkwrap_shrinkwrap>
     <version.shrinkwrap_descriptors>2.0.0-alpha-10</version.shrinkwrap_descriptors>
+
+    <!-- skipTests property -->
+    <skipTests>true</skipTests>			 
   </properties>
 
   <issueManagement>
@@ -79,7 +82,8 @@
     <plugins>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
+	<configuration>
+	  <skipTests>${skipTests}</skipTests>	
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
           <trimStackTrace>false</trimStackTrace>
           <printSummary>true</printSummary>
