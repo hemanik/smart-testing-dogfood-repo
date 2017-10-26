@@ -30,6 +30,9 @@
     <!-- External Deps -->
     <version.shrinkwrap_shrinkwrap>1.2.6</version.shrinkwrap_shrinkwrap>
     <version.shrinkwrap_descriptors>2.0.0-alpha-10</version.shrinkwrap_descriptors>
+
+    <!-- Skip integration tests by default -->
+    <skipITs>true</skipITs>
   </properties>
 
   <issueManagement>
@@ -87,8 +90,28 @@
             <include>**/*TestCase.java</include>
             <include>**/*TestSuite.java</include>
           </includes>
+          <excludes>
+            <exclude>**/IT*.java</exclude>
+          </excludes>
           <useFile>true</useFile>
         </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <configuration>
+          <redirectTestOutputToFile>true</redirectTestOutputToFile>
+          <trimStackTrace>false</trimStackTrace>
+          <printSummary>true</printSummary>
+          <useFile>true</useFile>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
